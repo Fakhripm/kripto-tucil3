@@ -1,12 +1,16 @@
 'use client';
 import React, { useState } from 'react';
 
+const { encryptRSA, decryptRSA, arrayToBase64 } = require('./../utils/rsa.js');
+import { keyPairOne, keyPairTwo } from './globalVariables';
+
 interface Message {
   text: string;
   sender: string;
   modified?: boolean;
   decrypted?: boolean;
   isFile?: boolean;
+  array?: BigInt[];
 }
 
 export default function Home() {
@@ -18,6 +22,9 @@ export default function Home() {
   const [sendPublicKeyPressedRoom1, setSendPublicKeyPressedRoom1] = useState(false);
   const [generateKeyPressedRoom2, setGenerateKeyPressedRoom2] = useState(false);
   const [sendPublicKeyPressedRoom2, setSendPublicKeyPressedRoom2] = useState(false);
+
+  console.log("publickeyTwo", keyPairTwo.publicKey);
+  console.log("privatekeyTwo", keyPairTwo.privateKey);
 
   const handleSendMessage = (room: number) => {
     const generateKeyPressed = room === 1 ? generateKeyPressedRoom1 : generateKeyPressedRoom2;
@@ -43,15 +50,23 @@ export default function Home() {
 
     const isFile = /^file:/.test(inputValue);
     originalMessage.isFile = isFile;
-
-    const modifiedMessage: Message = { text: `${inputValue} (enkripted)`, sender: `Room ${room}`, modified: true, isFile };
+    var inputEncrypted = " ";
+    if (room === 1) {
+      inputEncrypted = arrayToBase64(encryptRSA(inputValue,keyPairTwo.publicKey));
+    }
+    else {
+      inputEncrypted = arrayToBase64(encryptRSA(inputValue,keyPairOne.publicKey));
+    }
+    var modifiedMessage: Message = { text: `${inputEncrypted} (enkripted)`, sender: `Room ${room}`, modified: true, isFile };
 
     if (room === 1) {
       setRoom1Messages([...room1Messages, originalMessage]);
       setRoom2Messages([...room2Messages, modifiedMessage]);
+      modifiedMessage.array = (encryptRSA(inputValue,keyPairTwo.publicKey));
     } else {
       setRoom2Messages([...room2Messages, originalMessage]);
       setRoom1Messages([...room1Messages, modifiedMessage]);
+      modifiedMessage.array = (encryptRSA(inputValue,keyPairOne.publicKey));
     }
 
     if (room === 1) {
@@ -67,8 +82,10 @@ export default function Home() {
     messages[index].text = decryptedMessage;
     messages[index].decrypted = true;
     if (room === 1) {
+      messages[index].text = decryptRSA(messages[index].array ,keyPairOne.privateKey);
       setRoom1Messages(messages);
     } else {
+      messages[index].text = decryptRSA(messages[index]. array,keyPairTwo.privateKey);
       setRoom2Messages(messages);
     }
   };
