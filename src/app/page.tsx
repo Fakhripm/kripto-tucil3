@@ -1,11 +1,15 @@
 'use client';
 import React, { useState } from 'react';
 
+const { encryptRSA, decryptRSA, arrayToBase64 } = require('./../utils/rsa.js');
+import { keyPairOne, keyPairTwo } from './globalVariables';
+
 interface Message {
   text: string;
   sender: string;
   modified?: boolean;
   decrypted?: boolean; // Add decrypted field to track whether a message has been decrypted
+  array?: BigInt[];
 }
 
 export default function Home() {
@@ -13,6 +17,9 @@ export default function Home() {
   const [room2Messages, setRoom2Messages] = useState<Message[]>([]);
   const [inputValueRoom1, setInputValueRoom1] = useState('');
   const [inputValueRoom2, setInputValueRoom2] = useState('');
+
+  console.log("publickeyTwo", keyPairTwo.publicKey);
+  console.log("privatekeyTwo", keyPairTwo.privateKey);
 
   const handleSendMessage = (room: number) => {
     const inputValue = room === 1 ? inputValueRoom1 : inputValueRoom2;
@@ -31,16 +38,25 @@ export default function Home() {
     const inputValue = room === 1 ? inputValueRoom1 : inputValueRoom2;
     if (inputValue.trim() === '') return;
     const originalMessage: Message = { text: inputValue, sender: `Room ${room}` };
-    const modifiedMessage: Message = { text: `${inputValue} (enkripted)`, sender: `Room ${room}`, modified: true };
+    var inputEncrypted = " ";
+    if (room === 1) {
+      inputEncrypted = arrayToBase64(encryptRSA(inputValue,keyPairTwo.publicKey));
+    }
+    else {
+      inputEncrypted = arrayToBase64(encryptRSA(inputValue,keyPairOne.publicKey));
+    }
+    var modifiedMessage: Message = { text: `${inputEncrypted} (enkripted)`, sender: `Room ${room}`, modified: true };
     
     // Update state for both rooms with original and modified messages
     if (room === 1) {
       setRoom1Messages([...room1Messages, originalMessage]);
       setRoom2Messages([...room2Messages, modifiedMessage]);
+      modifiedMessage.array = (encryptRSA(inputValue,keyPairTwo.publicKey));
     }
     else {
       setRoom2Messages([...room2Messages, originalMessage]);
       setRoom1Messages([...room1Messages, modifiedMessage]);
+      modifiedMessage.array = (encryptRSA(inputValue,keyPairOne.publicKey));
     }
     
     // Clear input value
@@ -53,9 +69,14 @@ export default function Home() {
   
 
   const handleDecryptMessage = (room: number, index: number) => {
-    const messages = room === 1 ? [...room1Messages] : [...room2Messages];
+    let messages = room === 1 ? [...room1Messages] : [...room2Messages];
     const decryptedMessage = messages[index].text.replace(' (enkripted)', '');
-    messages[index].text = decryptedMessage;
+    if (room === 1) {
+      messages[index].text = decryptRSA(messages[index].array ,keyPairOne.privateKey);
+    }
+    else {
+      messages[index].text = decryptRSA(messages[index]. array,keyPairTwo.privateKey);
+    }
     messages[index].decrypted = true; // Set decrypted flag to true
     if (room === 1) {
       setRoom1Messages(messages);

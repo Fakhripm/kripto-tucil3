@@ -16,6 +16,8 @@
     --foreground-rgb: var(--foreground-light-rgb);
     --background-start-rgb: var(--background-start-light-rgb);
     --background-end-rgb: var(--background-end-light-rgb);
+    --input-background: #f7fafc;
+    --input-text: #1a202c;
   }
 }
 
@@ -24,6 +26,8 @@
     --foreground-rgb: var(--foreground-dark-rgb);
     --background-start-rgb: var(--background-start-dark-rgb);
     --background-end-rgb: var(--background-end-dark-rgb);
+    --input-background: #1a202c;
+    --input-text: #f7fafc;
   }
 }
 
@@ -37,7 +41,6 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  color: rgb(var(--foreground-rgb)); /* Set text color */
   height: 100vh; /* Set body height to cover the whole viewport */
   display: flex; /* Use flexbox to align items */
   justify-content: center; /* Center the content horizontally */

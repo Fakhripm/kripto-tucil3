@@ -94,16 +94,11 @@ function buktiModInverse(a,b,m) {
     return ((a*b)%m)
 }
 
-// Contoh penggunaan
-const p = 53;
-const q = 59;
-
-const keyPair = generateKeyPair(p, q);
-console.log("Public Key e : ", BigInt(keyPair.publicKey.e));
+/* console.log("Public Key e : ", BigInt(keyPair.publicKey.e));
 console.log("Public Key n : ", BigInt(keyPair.publicKey.n));
 console.log("Private Key d: ", BigInt(keyPair.privateKey.d));
 console.log("Private Key n: ", BigInt(keyPair.privateKey.n));
-console.log("bukti", buktiModInverse(keyPair.publicKey.e,keyPair.privateKey.d, (p-1)*(q-1)))
+console.log("bukti", buktiModInverse(keyPair.publicKey.e,keyPair.privateKey.d, (p-1)*(q-1))) */
 
 
 const encryptRSA= (message, publicKey) => {
@@ -142,13 +137,29 @@ const decryptRSA = (encryptedMessage, privateKey) => {
     return decryptedText;
 }
 
+const arrayToBase64 = (encryptedMessage) => {
+    //let retVal = "";
+    let toString = "";
+    for (let i=0;i < encryptedMessage.length;i++) {
+        toString += encryptedMessage[i];
+    }
+    console.log(toString);
+    return btoa(toString);
+}
 
-let message = "qw er ty12 345";
+ 
+/* // Contoh penggunaan
+const p = 61;
+const q = 53;
+
+const keyPair = generateKeyPair(p, q);
+let message = "silvester asli";
 
 let encryptedMessage = encryptRSA(message, keyPair.publicKey);
 console.log("Pesan terenkripsi: ", encryptedMessage);
+console.log("array to string: ",arrayToBase64(encryptedMessage));
 
 let decryptedMessage = decryptRSA(encryptedMessage, keyPair.privateKey);
 console.log("Pesan terdekripsi: ", decryptedMessage);
-
-module.exports = { encryptRSA, decryptRSA };
+ */
+module.exports = { encryptRSA, decryptRSA, generateKeyPair, arrayToBase64 };
