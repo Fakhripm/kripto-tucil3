@@ -23,8 +23,8 @@ export default function Home() {
   const [generateKeyPressedRoom2, setGenerateKeyPressedRoom2] = useState(false);
   const [sendPublicKeyPressedRoom2, setSendPublicKeyPressedRoom2] = useState(false);
 
-  console.log("publickeyTwo", keyPairTwo.publicKey);
-  console.log("privatekeyTwo", keyPairTwo.privateKey);
+  //console.log("publickeyTwo", keyPairTwo.publicKey);
+  //console.log("privatekeyTwo", keyPairTwo.privateKey);
 
   const handleSendMessage = (room: number) => {
     const generateKeyPressed = room === 1 ? generateKeyPressedRoom1 : generateKeyPressedRoom2;
@@ -90,14 +90,6 @@ export default function Home() {
     }
   };
 
-  const handleGenerateKey = (room: number) => {
-    if (room === 1) {
-      setGenerateKeyPressedRoom1(true);
-    } else {
-      setGenerateKeyPressedRoom2(true);
-    }
-  };
-
   const handleSendPublicKey = (room: number) => {
     if (room === 1) {
       setSendPublicKeyPressedRoom1(true);
@@ -131,12 +123,47 @@ export default function Home() {
     anchor.click();
   };
 
+  const handleGenerateKeyAndDownload = (room: number) => {
+    let keyPair;
+    let namePrefix;
+  
+    if (room === 1) {
+      setGenerateKeyPressedRoom1(true);
+      keyPair = // Generate RSA key pair for Room 1
+      namePrefix = 'Alice';
+      downloadKey('public', namePrefix, JSON.stringify(keyPairOne.publicKey));
+      downloadKey('private', namePrefix, JSON.stringify(keyPairOne.publicKey));
+    } else {
+      setGenerateKeyPressedRoom2(true);
+      keyPair = // Generate RSA key pair for Room 2
+      namePrefix = 'Bob';
+      downloadKey('public', namePrefix, JSON.stringify(keyPairTwo.publicKey));
+      downloadKey('private', namePrefix, JSON.stringify(keyPairTwo.publicKey));
+    }
+  }
+  
+  const downloadKey = (type: string, namePrefix: string, key: string) => {
+    const blob = new Blob([key], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    
+    // Menyesuaikan nama file yang akan diunduh
+    anchor.download = `${namePrefix}.${type === 'public' ? 'pub' : 'pri'}`;
+  
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(url);
+  }
+  
+
   return (
     <div className="flex">
       <div className="border border-gray-300 rounded-lg p-4 w-96">
         <h2 className="text-lg font-semibold mb-4">Alice</h2>
         <div className="mt-2">
-          <button onClick={() => handleGenerateKey(1)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2">Bangkitkan Kunci</button>
+          <button onClick={() => handleGenerateKeyAndDownload(1)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2">Bangkitkan Kunci</button>
           <button onClick={() => handleSendPublicKey(1)} className={`ml-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 ${!generateKeyPressedRoom1 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom1}>Kirim Kunci Publik</button>
         </div>
         <div className="mb-4 h-60 overflow-y-auto">
@@ -183,7 +210,7 @@ export default function Home() {
       <div className="border border-gray-300 rounded-lg p-4 w-96">
         <h2 className="text-lg font-semibold mb-4">Bob</h2>
         <div className="mt-2">
-          <button onClick={() => handleGenerateKey(2)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2">Bangkitkan Kunci</button>
+          <button onClick={() => handleGenerateKeyAndDownload(2)} className="bg-green-500 hover:bg-green-600 text-white px-4 py-2">Bangkitkan Kunci</button>
           <button onClick={() => handleSendPublicKey(2)} className={`ml-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 ${!generateKeyPressedRoom2 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom2}>Kirim Kunci Publik</button>
         </div>
         <div className="mb-4 h-60 overflow-y-auto">
