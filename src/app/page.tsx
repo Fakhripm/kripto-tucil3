@@ -194,8 +194,8 @@ export default function Home() {
             value={inputValueRoom1}
             onChange={(e) => setInputValueRoom1(e.target.value)}
             placeholder="Type a message..."
-            className={`flex-1 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${!generateKeyPressedRoom1 && "cursor-not-allowed"}`}
-            disabled={!generateKeyPressedRoom1}
+            className={`flex-1 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${!sendPublicKeyPressedRoom2 && "cursor-not-allowed"}`}
+            disabled={!sendPublicKeyPressedRoom2}
           />
           <input
             type="file"
@@ -203,8 +203,8 @@ export default function Home() {
             className={`hidden`}
             id="file-upload-room1"
           />
-          <label htmlFor="file-upload-room1" className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 cursor-pointer ${!generateKeyPressedRoom1 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom1}>Upload File</label>
-          <button onClick={() => handleEncryptMessage(1)} className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ml-2 ${!generateKeyPressedRoom1 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom1}>Send</button>
+          <label htmlFor="file-upload-room1" className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 cursor-pointer ${!sendPublicKeyPressedRoom2 && "cursor-not-allowed"}`}>Upload File</label>
+          <button onClick={() => handleEncryptMessage(1)} className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ml-2 ${!sendPublicKeyPressedRoom2 && "cursor-not-allowed"}`} disabled={!sendPublicKeyPressedRoom2}>Send</button>
         </div>
       </div>
       <div className="border border-gray-300 rounded-lg p-4 w-96">
@@ -241,8 +241,8 @@ export default function Home() {
             value={inputValueRoom2}
             onChange={(e) => setInputValueRoom2(e.target.value)}
             placeholder="Type a message..."
-            className={`flex-1 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${!generateKeyPressedRoom2 && "cursor-not-allowed"}`}
-            disabled={!generateKeyPressedRoom2}
+            className={`flex-1 rounded-l-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${!sendPublicKeyPressedRoom1 && "cursor-not-allowed"}`}
+            disabled={!sendPublicKeyPressedRoom1}
           />
           <input
             type="file"
@@ -250,8 +250,8 @@ export default function Home() {
             className={`hidden`}
             id="file-upload-room2"
           />
-          <label htmlFor="file-upload-room2" className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 cursor-pointer ${!generateKeyPressedRoom2 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom2}>Upload File</label>
-          <button onClick={() => handleEncryptMessage(2)} className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ml-2 ${!generateKeyPressedRoom2 && "cursor-not-allowed"}`} disabled={!generateKeyPressedRoom2}>Send</button>
+          <label htmlFor="file-upload-room2" className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 cursor-pointer ${!sendPublicKeyPressedRoom1 && "cursor-not-allowed"}`}>Upload File</label>
+          <button onClick={() => handleEncryptMessage(2)} className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ml-2 ${!sendPublicKeyPressedRoom1 && "cursor-not-allowed"}`} disabled={!sendPublicKeyPressedRoom1}>Send</button>
         </div>
       </div>
     </div>
