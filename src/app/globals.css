@@ -3,22 +3,28 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --foreground-light-rgb: 0, 0, 0;
+  --foreground-dark-rgb: 255, 255, 255;
+  --background-start-light-rgb: 214, 219, 220;
+  --background-end-light-rgb: 255, 255, 255;
+  --background-start-dark-rgb: 0, 0, 0;
+  --background-end-dark-rgb: 0, 0, 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+@media (prefers-color-scheme: light) {
+  body {
+    --foreground-rgb: var(--foreground-light-rgb);
+    --background-start-rgb: var(--background-start-light-rgb);
+    --background-end-rgb: var(--background-end-light-rgb);
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, rgba(var(--background-start-rgb), 1), rgba(var(--background-end-rgb), 1));
+@media (prefers-color-scheme: dark) {
+  body {
+    --foreground-rgb: var(--foreground-dark-rgb);
+    --background-start-rgb: var(--background-start-dark-rgb);
+    --background-end-rgb: var(--background-end-dark-rgb);
+  }
 }
 
 @layer utilities {
@@ -27,13 +33,11 @@ body {
   }
 }
 
-/* styles/globals.css */
-
-/* Custom global styles */
 body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
+  color: rgb(var(--foreground-rgb)); /* Set text color */
   height: 100vh; /* Set body height to cover the whole viewport */
   display: flex; /* Use flexbox to align items */
   justify-content: center; /* Center the content horizontally */
